@@ -1,0 +1,12 @@
+/schnipsel/local_settings.py
+/schnipsel.egg-info/
+__pycache__/
+/data/*
+/dist/
+!/data/.gitkeep
+/schnipsel/static/
+/build/
+
+node_modules/
+app/dist/
+npm-debug.log*
