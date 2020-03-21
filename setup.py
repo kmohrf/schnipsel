@@ -20,11 +20,18 @@ class BuildAssetsCommand(Command):
         pass
 
     def run(self):
+        app_path = os.path.join(BASE_DIR, "app")
         python_bin = (
             os.path.join(os.environ["VIRTUAL_ENV"], "bin", "python")
             if "VIRTUAL_ENV" in os.environ
             else "/usr/bin/python3"
         )
+        self.announce(
+            "Installing web app dependencies with npm", level=distutils.log.INFO
+        )
+        subprocess.check_call(["npm", "ci", "--no-progress"], cwd=app_path)
+        self.announce("Building web app with npm", level=distutils.log.INFO)
+        subprocess.check_call(["npm", "run", "build"], cwd=app_path)
         self.announce("Collecting assets for Django", level=distutils.log.INFO)
         subprocess.check_call(
             [python_bin, "-m", "schnipsel", "collectstatic", "--no-input", "--clear",],
