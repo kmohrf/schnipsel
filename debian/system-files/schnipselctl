@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -eu
+
+EXEC_USER=schnipsel
+EXEC_BASE=/usr/share/schnipsel
+
+if [ "$(id -nu)" = "$EXEC_USER" ]; then
+    exec PYTHONPATH="$EXECBASE" python3 -m schnipsel "$@"
+elif [ "$(id -u)" = 0 ]; then
+    exec su -s "$0" "$EXEC_USER" -- "$@"
+else
+    echo "please run $(basename "$0") as root or '$EXEC_USER'" >&2
+    exit 1
+fi

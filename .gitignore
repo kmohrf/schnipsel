@@ -6,6 +6,7 @@ __pycache__/
 !/data/.gitkeep
 /schnipsel/static/
 /build/
+/.pybuild/
 
 node_modules/
 app/dist/

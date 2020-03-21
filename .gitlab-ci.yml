@@ -1,0 +1,26 @@
+image: git-registry.hack-hro.de:443/kmohrf/schnipsel/build:buster
+
+stages:
+  - test
+  - build
+  - deploy
+
+make_deb_package:
+  stage: build
+  tags:
+    - fast-io
+    - fast-network
+  only:
+    - tags
+    - triggers
+    - schedules
+    - merge_requests
+    - web
+  script:
+    - dpkg-buildpackage --no-sign
+  artifacts:
+    paths:
+      - ../*.deb
+      - ../*.changes
+      - ../*.orig.tar.gz
+    expire_in: 1w

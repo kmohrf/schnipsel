@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+INSTALL_DIR=/usr/share/schnipsel
+
+export PYBUILD_INSTALL_ARGS=\
+  --install-lib=$(INSTALL_DIR) \
+  --install-scripts=$(INSTALL_DIR) \
+  --install-data=$(INSTALL_DIR)
+export PYBUILD_DESTDIR=debian/schnipsel
+export PYBUILD_NAME=schnipsel
+#export PYBUILD_DISABLE=test
+
+%:
+	dh $@ --package schnipsel --with python3 --buildsystem=pybuild
