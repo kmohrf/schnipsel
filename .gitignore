@@ -1,11 +1,18 @@
-/schnipsel/local_settings.py
-/schnipsel.egg-info/
 __pycache__/
+
 /data/*
-/dist/
 !/data/.gitkeep
+/schnipsel/local_settings.py
 /schnipsel/static/
+
+/dist/
+/schnipsel.egg-info/
 /build/
+/.pybuild/
+/debian/*debhelper*
+/debian/*.substvars
+/debian/files
+/debian/schnipsel
 
 node_modules/
 app/dist/

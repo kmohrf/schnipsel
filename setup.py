@@ -29,9 +29,17 @@ class BuildAssetsCommand(Command):
         self.announce(
             "Installing web app dependencies with npm", level=distutils.log.INFO
         )
-        subprocess.check_call(["npm", "ci", "--no-progress"], cwd=app_path)
+        subprocess.check_call(
+            ["env", "-i", f"PATH={os.environ['PATH']}", "npm", "ci", "--no-progress"],
+            cwd=app_path,
+            env={"ADBLOCK": "true",},
+        )
         self.announce("Building web app with npm", level=distutils.log.INFO)
-        subprocess.check_call(["npm", "run", "build"], cwd=app_path)
+        subprocess.check_call(
+            ["env", "-i", f"PATH={os.environ['PATH']}", "npm", "run", "build"],
+            cwd=app_path,
+            env={"PATH": os.environ["PATH"]},
+        )
         self.announce("Collecting assets for Django", level=distutils.log.INFO)
         subprocess.check_call(
             [python_bin, "-m", "schnipsel", "collectstatic", "--no-input", "--clear",],
