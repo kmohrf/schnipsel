@@ -21,7 +21,7 @@
                 <b-button :label="note.pk ? 'Save Changes' : 'Create Note'"
                           type="is-primary" icon-left="save" native-type="submit"
                           :loading="isSaving" :disabled="isExecutingAction"
-                          @click="saveChanges" style="margin-left: auto"/>
+                          style="margin-left: auto"/>
             </div>
         </footer>
     </form>

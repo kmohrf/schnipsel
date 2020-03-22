@@ -15,8 +15,7 @@
                             </b-field>
                         </b-field>
                         <b-field>
-                            <b-button label="Create Board" type="is-primary"
-                                      @click="doCreateBoard" native-type="submit"
+                            <b-button label="Create Board" type="is-primary" native-type="submit"
                                       :disabled="isCreating" :loading="isCreating"/>
                         </b-field>
                     </form>
