@@ -114,12 +114,12 @@ class SettingsViewSet(viewsets.GenericViewSet):
                 "board_language_choices": _choices_to_dicts(
                     models.SUPPORTED_BOARD_LANGUAGES,
                     key_name="code",
-                    value_name="language",
+                    value_name="name",
                 ),
                 "ui_language_choices": _choices_to_dicts(
                     models.SUPPORTED_UI_LANGAUGES,
                     key_name="code",
-                    value_name="language",
+                    value_name="name",
                 ),
             }
         )
