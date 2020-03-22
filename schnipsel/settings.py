@@ -120,7 +120,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "build", "app"),)
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:",}}
-
+BACKUP_PATH = "/var/backups/schnipsel"
 SECRET_KEY = os.environ.get("SCHNIPSEL_SECRET_KEY", None)
 
 try:
