@@ -21,6 +21,7 @@ class BuildAssetsCommand(Command):
 
     def run(self):
         app_path = os.path.join(BASE_DIR, "app")
+        clean_env_prefix = ["env", "-i", f"PATH={os.environ['PATH']}"]
         python_bin = (
             os.path.join(os.environ["VIRTUAL_ENV"], "bin", "python")
             if "VIRTUAL_ENV" in os.environ
@@ -30,15 +31,12 @@ class BuildAssetsCommand(Command):
             "Installing web app dependencies with npm", level=distutils.log.INFO
         )
         subprocess.check_call(
-            ["env", "-i", f"PATH={os.environ['PATH']}", "npm", "ci", "--no-progress"],
+            clean_env_prefix + ["ADBLOCK=true", "npm", "ci", "--no-progress"],
             cwd=app_path,
-            env={"ADBLOCK": "true",},
         )
         self.announce("Building web app with npm", level=distutils.log.INFO)
         subprocess.check_call(
-            ["env", "-i", f"PATH={os.environ['PATH']}", "npm", "run", "build"],
-            cwd=app_path,
-            env={"PATH": os.environ["PATH"]},
+            clean_env_prefix + ["npm", "run", "build"], cwd=app_path,
         )
         self.announce("Collecting assets for Django", level=distutils.log.INFO)
         subprocess.check_call(
