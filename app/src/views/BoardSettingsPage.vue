@@ -157,7 +157,11 @@
       async saveChanges () {
         try {
           this.isSavingChanges = true
-          this.board = await updateBoard(this.board.pk, this.board)
+          // TODO: this totally breaks the page by causing 100% CPU load.
+          //       It’s unclear why this happens, because devtools break too :(.
+          // this.board = await updateBoard(this.board.pk, this.board)
+          await updateBoard(this.board.pk, this.board)
+          window.location.reload()
         } catch (e) {
           this.errors = e.errors
         } finally {
