@@ -1,7 +1,7 @@
 import os
 import distutils.log
 from distutils.cmd import Command
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools.command.build_py import build_py
 import subprocess
 
@@ -59,7 +59,7 @@ setup(
     url="https://git.hack-hro.de/kmohrf/schnipsel",
     author="Konrad Mohrfeldt",
     author_email="konrad.mohrfeldt@farbdev.org",
-    packages=("schnipsel",),
+    packages=find_packages(),
     install_requires=(
         "django>=2.2<3.0",
         "djangorestframework>=3.9<4.0",
