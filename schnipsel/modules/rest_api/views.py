@@ -23,7 +23,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = models.User.objects.all().order_by("-date_joined")
     permission_classes = [my_permissions.UserPermission]
     filter_backends = [filters.SearchFilter]
-    search_fields = ["email", "first_name", "last_name", "username"]
+    search_fields = ["email", "name", "first_name", "last_name", "username"]
     lookup_field = "username"
     lookup_url_kwarg = "username"
 
