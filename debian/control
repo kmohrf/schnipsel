@@ -31,7 +31,7 @@ Depends:
  python3-djangorestframework,
  python3-pil,
 Suggests:
- python3-django-auth-ldap (>= 2.0.0),
+ python3-django-python3-ldap,
  uwsgi,
  uwsgi-plugin-python3,
  nginx,
