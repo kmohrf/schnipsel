@@ -6,7 +6,7 @@ EXEC_USER=schnipsel
 EXEC_BASE=/usr/share/schnipsel
 
 if [ "$(id -nu)" = "$EXEC_USER" ]; then
-    exec PYTHONPATH="$EXECBASE" python3 -m schnipsel "$@"
+    PYTHONPATH="$EXEC_BASE" exec python3 -m schnipsel "$@"
 elif [ "$(id -u)" = 0 ]; then
     exec su -s "$0" "$EXEC_USER" -- "$@"
 else
