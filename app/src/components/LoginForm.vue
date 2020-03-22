@@ -22,7 +22,7 @@
         </div>
 
         <div class="buttons">
-            <b-button type="is-text" @click="mode = 'register'" v-if="mode === 'login'">
+            <b-button type="is-text" @click="mode = 'register'" v-if="false && mode === 'login'">
                 Register
             </b-button>
 
