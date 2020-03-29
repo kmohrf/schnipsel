@@ -26,6 +26,7 @@ class UserViewSet(viewsets.ModelViewSet):
     search_fields = ["email", "name", "first_name", "last_name", "username"]
     lookup_field = "username"
     lookup_url_kwarg = "username"
+    lookup_value_regex = r"[a-zA-Z0-9.\-_]+"
 
     def get_serializer_class(self):
         if self.action == "retrieve":
