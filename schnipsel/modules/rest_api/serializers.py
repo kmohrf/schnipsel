@@ -42,7 +42,13 @@ class UserDetailSerializer(UserSerializer):
         return super().update(user, validated_data)
 
     class Meta(DefaultUserMeta):
-        fields = DefaultUserMeta.fields + ("email", "language", "name", "password",)
+        fields = DefaultUserMeta.fields + (
+            "email",
+            "language",
+            "name",
+            "password",
+            "source",
+        )
 
 
 class UserCreateSerializer(UserDetailSerializer):

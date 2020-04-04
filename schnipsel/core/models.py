@@ -47,6 +47,7 @@ class User(AbstractUser):
     first_name = None
     last_name = None
     name = models.CharField(max_length=150, null=True, blank=True)
+    source = models.CharField(max_length=128, default="local")
     avatar = models.ImageField(null=True, blank=True)
     language = models.CharField(
         max_length=2, default="en", choices=SUPPORTED_UI_LANGAUGES
