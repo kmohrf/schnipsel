@@ -28,5 +28,11 @@
         margin-right: .5em;
         height: 1.75em;
         width: 1.75em;
+        flex: 0 0 auto;
+    }
+
+    .profile-badge > strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
