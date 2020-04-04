@@ -57,7 +57,6 @@ class UserViewSet(viewsets.ModelViewSet):
             ).data
         )
 
-    @action(detail=True, methods=["GET"], permission_classes=[permissions.AllowAny])
     @action(detail=False, methods=["GET"], permission_classes=[permissions.AllowAny])
     def login(self, request):
         if self.request.user.is_authenticated:
@@ -72,6 +71,9 @@ class UserViewSet(viewsets.ModelViewSet):
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
+    @action(
+        detail=True, methods=["GET"], permission_classes=[permissions.IsAuthenticated]
+    )
     def avatar(self, request, pk=None):
         user = self.get_object()
         if user.avatar:
