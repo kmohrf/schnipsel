@@ -39,3 +39,9 @@ release-generic: release-ready
 .PHONY: test
 test:
 	@true
+
+.PHONY: lint
+format_code:
+	black setup.py schnipsel
+	flake8 .
+	(cd app; npm run lint;)
