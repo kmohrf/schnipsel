@@ -1,9 +1,11 @@
 import hashlib
 
+from django.contrib.auth import logout
 from django.db.models import Exists, OuterRef, Q
 from django.http.response import HttpResponseRedirect, HttpResponseRedirectBase
+from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -56,6 +58,20 @@ class UserViewSet(viewsets.ModelViewSet):
         )
 
     @action(detail=True, methods=["GET"], permission_classes=[permissions.AllowAny])
+    @action(detail=False, methods=["GET"], permission_classes=[permissions.AllowAny])
+    def login(self, request):
+        if self.request.user.is_authenticated:
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"login_endpoint": reverse("login")}, status=status.HTTP_403_FORBIDDEN
+            )
+
+    @action(detail=False, methods=["POST"], permission_classes=[permissions.AllowAny])
+    def logout(self, request):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)
+
     def avatar(self, request, pk=None):
         user = self.get_object()
         if user.avatar:

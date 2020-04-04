@@ -1,30 +1,14 @@
 import Vue from 'vue'
 
-const {sessionStorage: webStorage} = window
-
-function bindStorage (prop) {
-  return {
-    get () {
-      return JSON.parse(webStorage.getItem(prop))
-    },
-    set (value) {
-      webStorage.setItem(prop, JSON.stringify(value))
-    }
+function getCookie (name) {
+  if (document.cookie && document.cookie !== '') {
+    const cookie = document.cookie.split(';')
+      .map(cookie => cookie.trim())
+      .find(cookie => cookie.substring(0, name.length + 1) === (name + '='))
+    return cookie ? decodeURIComponent(cookie.substring(name.length + 1)) : null
   }
+  return null
 }
-
-const credentials = Object.defineProperties({
-  clear () {
-    this.set({email: null, password: null})
-  },
-  set ({email, password}) {
-    this.email = email
-    this.password = password
-  }
-}, {
-  email: bindStorage('email'),
-  password: bindStorage('password')
-})
 
 class APIError extends Error {
   constructor (message, errors) {
@@ -48,7 +32,7 @@ export const userMixin = {
     }
   },
   async created () {
-    if (credentials.email && !userData.user) {
+    if (!(await shouldLogin()) && !userData.user) {
       await setUserData()
     }
   }
@@ -71,8 +55,8 @@ function fetch (resource, init = null) {
       init.headers = new Headers(init.headers)
     }
   }
-  if (credentials.email) {
-    init.headers.set('Authorization', `Basic ${btoa(`${credentials.email}:${credentials.password}`)}`)
+  if (init && init.method && ['PUT', 'PATCH', 'POST', 'DELETE'].includes(init.method.toUpperCase())) {
+    init.headers.set('X-CSRFToken', getCookie('csrftoken'))
   }
   init.headers.set('Accept', 'application/json')
   init.headers.set('Content-Type', 'application/json')
@@ -80,26 +64,47 @@ function fetch (resource, init = null) {
 }
 
 export async function shouldLogin () {
-  if (!credentials.email) return true
-  return (await fetch('/api/users')).status !== 200
+  return (await fetch('/api/users/login')).status === 403
+}
+
+async function getLoginInfo () {
+  return await fetch('/api/users/login').then(res => res.json())
 }
 
 export async function login (email, password) {
+  // logout any existing sessions
   await logout()
-  credentials.set({email, password})
-  if (await shouldLogin()) {
-    credentials.clear()
-    return false
-  } else {
+  // fetch the login endpoint we use for authentication
+  const {login_endpoint: loginEndpoint} = await getLoginInfo()
+  // fetch the login page, so it sets csrf cookies
+  await window.fetch(loginEndpoint)
+
+  // authenticate us
+  const body = new window.FormData()
+  body.append('username', email)
+  body.append('password', password)
+  body.append('csrfmiddlewaretoken', getCookie('csrftoken'))
+  const res = await window.fetch(loginEndpoint, {method: 'post', body})
+
+  // successful logins are followed by a redirect
+  if (res.redirected && res.status === 200) {
     await setUserData()
     return true
+  } else {
+    // this is helpful for debugging, as it will load the actual
+    // request content in devtools
+    await res.text()
+    return false
   }
 }
 
 export async function logout () {
-  credentials.clear()
-  userData.user = null
-  userData.boards = []
+  const wasSuccessFul = (await fetch('/api/users/logout', {method: 'post'})).status === 200
+  if (wasSuccessFul) {
+    userData.user = null
+    userData.boards = []
+  }
+  return wasSuccessFul
 }
 
 async function setUserData () {
@@ -108,15 +113,13 @@ async function setUserData () {
 }
 
 export async function register (data) {
-  credentials.clear()
-  const {email, password} = data
+  await logout()
   const res = await fetch('/api/users', {
     method: 'post',
     body: JSON.stringify(data)
   })
   const userDataOrErrors = await res.json()
   if (res.status === 201) {
-    credentials.set({email, password})
     await setUserData()
     return true
   } else {

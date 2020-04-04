@@ -17,7 +17,7 @@
       }
     },
     async created () {
-      if (await shouldLogin() && this.$route.name !== 'hello') {
+      if (this.$route.name !== 'hello' && await shouldLogin()) {
         this.$router.replace({name: 'hello'})
       }
     }

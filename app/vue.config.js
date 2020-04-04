@@ -17,6 +17,7 @@ module.exports = {
     proxy: proxyTarget !== 'disable' ? {
       '/api/': proxyOptions,
       '/api-auth/': proxyOptions,
+      '/auth/': proxyOptions,
       '/media/': proxyOptions,
       '/static/': proxyOptions
     } : null
