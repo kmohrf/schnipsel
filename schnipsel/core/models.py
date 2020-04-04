@@ -4,6 +4,8 @@ import string
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 import reversion
 
 from schnipsel.core.util import get_email_localpart
@@ -52,6 +54,9 @@ class User(AbstractUser):
     name = models.CharField(max_length=150, null=True, blank=True)
     source = models.CharField(max_length=128, default="local")
     avatar = models.ImageField(null=True, blank=True)
+    avatar_thumbnail = ImageSpecField(
+        source="avatar", processors=[ResizeToFill(256, 256)]
+    )
     language = models.CharField(
         max_length=2, default="en", choices=SUPPORTED_UI_LANGAUGES
     )

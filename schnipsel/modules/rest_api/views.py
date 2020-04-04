@@ -59,7 +59,9 @@ class UserViewSet(viewsets.ModelViewSet):
     def avatar(self, request, pk=None):
         user = self.get_object()
         if user.avatar:
-            return HttpResponseRedirect(request.build_absolute_uri(user.avatar.url))
+            return HttpResponseRedirect(
+                request.build_absolute_uri(user.avatar_thumbnail.url)
+            )
         token = hashlib.md5(f"schnipsel-${user.email}".encode()).hexdigest()
         return HttpTemporaryRedirect(f"https://api.adorable.io/avatars/128/{token}.png")
 

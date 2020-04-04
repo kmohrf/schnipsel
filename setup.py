@@ -64,6 +64,7 @@ setup(
         "django>=2.2<3.0",
         "djangorestframework>=3.9<4.0",
         "django-filter>=2.1.0<3.0",
+        "django-imagekit>=4.0.2<5.0",
         "django-reversion>=3.0<4.0",
         "pillow",
     ),
