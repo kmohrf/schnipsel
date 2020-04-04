@@ -3,7 +3,6 @@ import reversion
 from reversion.models import Version
 
 from schnipsel.core import models
-from schnipsel.core.util import get_email_localpart
 
 
 class DefaultUserMeta:
@@ -17,10 +16,7 @@ class DefaultUserMeta:
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     avatar = serializers.HyperlinkedIdentityField("user-avatar")
-    label = serializers.SerializerMethodField("_get_label")
-
-    def _get_label(self, user):
-        return user.name if user.name else get_email_localpart(user.email)
+    label = serializers.CharField(source="__str__", read_only=True)
 
     class Meta(DefaultUserMeta):
         pass

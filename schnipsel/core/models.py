@@ -6,6 +6,9 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 import reversion
 
+from schnipsel.core.util import get_email_localpart
+
+
 SUPPORTED_BOARD_LANGUAGES = (
     ("ar", "العربية"),
     ("de", "Deutsch"),
@@ -52,6 +55,9 @@ class User(AbstractUser):
     language = models.CharField(
         max_length=2, default="en", choices=SUPPORTED_UI_LANGAUGES
     )
+
+    def __str__(self):
+        return self.name if self.name else get_email_localpart(self.email)
 
 
 class Board(models.Model):
