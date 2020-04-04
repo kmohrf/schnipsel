@@ -38,6 +38,7 @@ class BoardAdmin(admin.ModelAdmin):
 
 @admin.register(models.User)
 class UserAdmin(UserAdmin):
+    ordering = ("email",)
     fieldsets = UserAdmin.fieldsets + (
         ("Custom Data", {"fields": ("name", "language", "avatar",)}),
     )

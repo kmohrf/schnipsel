@@ -3,7 +3,7 @@ import hashlib
 from django.db.models import Exists, OuterRef, Q
 from django.http.response import HttpResponseRedirect, HttpResponseRedirectBase
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, permissions, viewsets
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -20,13 +20,18 @@ class HttpTemporaryRedirect(HttpResponseRedirectBase):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = models.User.objects.all().order_by("-date_joined")
     permission_classes = [my_permissions.UserPermission]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ["email", "name", "first_name", "last_name", "username"]
-    lookup_field = "username"
-    lookup_url_kwarg = "username"
-    lookup_value_regex = r"[a-zA-Z0-9.\-_]+"
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["email"]
+
+    def get_queryset(self):
+        if self.action == "list":
+            request_keys = set(self.request.query_params.keys())
+            # we don’t want to provide a list of users
+            # in case no filter params have been provided
+            if not request_keys.intersection(self.filterset_fields):
+                return models.User.objects.none()
+        return models.User.objects.all().order_by("-date_joined")
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -51,11 +56,11 @@ class UserViewSet(viewsets.ModelViewSet):
         )
 
     @action(detail=True, methods=["GET"], permission_classes=[permissions.AllowAny])
-    def avatar(self, request, username=None):
+    def avatar(self, request, pk=None):
         user = self.get_object()
         if user.avatar:
             return HttpResponseRedirect(request.build_absolute_uri(user.avatar.url))
-        token = hashlib.md5(f"schnipsel-${user.username}".encode()).hexdigest()
+        token = hashlib.md5(f"schnipsel-${user.email}".encode()).hexdigest()
         return HttpTemporaryRedirect(f"https://api.adorable.io/avatars/128/{token}.png")
 
 
@@ -118,9 +123,7 @@ class SettingsViewSet(viewsets.GenericViewSet):
                     value_name="name",
                 ),
                 "ui_language_choices": _choices_to_dicts(
-                    models.SUPPORTED_UI_LANGAUGES,
-                    key_name="code",
-                    value_name="name",
+                    models.SUPPORTED_UI_LANGAUGES, key_name="code", value_name="name",
                 ),
             }
         )

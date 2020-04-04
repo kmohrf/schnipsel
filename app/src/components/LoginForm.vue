@@ -1,7 +1,7 @@
 <template>
     <form class="box" @submit.prevent="doAction">
-        <b-field label="Username" v-bind="errorMessages.username">
-            <b-input icon="user" v-model="username" ref="username"/>
+        <b-field label="Email" v-bind="errorMessages.email">
+            <b-input type="email" icon="user" v-model="email" ref="email"/>
         </b-field>
         <b-field label="Password" v-bind="errorMessages.password">
             <b-input type="password" icon="key" v-model="password"
@@ -12,13 +12,10 @@
                 <b-input type="password" icon="key" v-model="passwordRepeat"
                          :password-reveal="Boolean(passwordRepeat)"/>
             </b-field>
-            <b-field label="Email" v-bind="errorMessages.email">
-                <b-input type="email" icon="mail" v-model="email"/>
-            </b-field>
         </template>
 
         <div v-if="loginFailed" class="notification is-danger">
-            Username or password was wrong.
+            Email or password was wrong.
         </div>
 
         <div class="buttons">
@@ -41,7 +38,6 @@
   export default {
     data () {
       return {
-        username: '',
         password: '',
         passwordRepeat: '',
         email: '',
@@ -82,9 +78,9 @@
       async doRegister () {
         this.isLoading = true
         try {
-          const {username, password, email} = this
+          const {email, password} = this
           await register({
-            username, password, email
+            email, password
           })
           this.$router.replace({name: 'home'})
         } catch (e) {
@@ -96,7 +92,7 @@
       async doLogin () {
         this.isLoading = true
         this.loginFailed = false
-        if (await login(this.username, this.password)) {
+        if (await login(this.email, this.password)) {
           this.$router.replace({name: 'home'})
         } else {
           this.loginFailed = true
@@ -107,7 +103,7 @@
     mounted () {
       if (window.innerWidth > 1024) {
         this.$nextTick(() => {
-          this.$refs.username.focus()
+          this.$refs.email.focus()
         })
       }
     }

@@ -1,8 +1,7 @@
 import random
 import string
 
-from django.contrib.auth.models import AbstractUser, UnicodeUsernameValidator
-from django.core import validators
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 import reversion
@@ -36,25 +35,17 @@ def _create_random_token(length, alphabet=string.ascii_letters + string.digits):
     return "".join(random.choice(alphabet) for _ in range(length))
 
 
-class NotThatUsernameValidator(validators.BaseValidator):
-    message = _('Username cannot be "%(limit_value)s".')
-    code = "not_that_username"
-
-    def compare(self, a, b):
-        return a == b
-
-
 class User(AbstractUser):
-    username = models.CharField(
-        _("username"),
-        max_length=150,
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+    email = models.EmailField(
+        _("email address"),
         unique=True,
-        help_text=_(
-            "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-        ),
-        validators=[UnicodeUsernameValidator, NotThatUsernameValidator("me")],
-        error_messages={"unique": _("A user with that username already exists."),},
+        error_messages={"unique": _("A user with that email address already exists.")},
     )
+    username = None
+    first_name = None
+    last_name = None
     name = models.CharField(max_length=150, null=True, blank=True)
     avatar = models.ImageField(null=True, blank=True)
     language = models.CharField(

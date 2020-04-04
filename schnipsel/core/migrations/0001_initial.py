@@ -96,7 +96,6 @@ class Migration(migrations.Migration):
                         unique=True,
                         validators=[
                             django.contrib.auth.validators.UnicodeUsernameValidator,
-                            schnipsel.core.models.NotThatUsernameValidator("me"),
                         ],
                         verbose_name="username",
                     ),

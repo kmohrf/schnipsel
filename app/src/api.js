@@ -15,14 +15,14 @@ function bindStorage (prop) {
 
 const credentials = Object.defineProperties({
   clear () {
-    this.set({username: null, password: null})
+    this.set({email: null, password: null})
   },
-  set ({username, password}) {
-    this.username = username
+  set ({email, password}) {
+    this.email = email
     this.password = password
   }
 }, {
-  username: bindStorage('username'),
+  email: bindStorage('email'),
   password: bindStorage('password')
 })
 
@@ -48,7 +48,7 @@ export const userMixin = {
     }
   },
   async created () {
-    if (credentials.username && !userData.user) {
+    if (credentials.email && !userData.user) {
       await setUserData()
     }
   }
@@ -71,8 +71,8 @@ function fetch (resource, init = null) {
       init.headers = new Headers(init.headers)
     }
   }
-  if (credentials.username) {
-    init.headers.set('Authorization', `Basic ${btoa(`${credentials.username}:${credentials.password}`)}`)
+  if (credentials.email) {
+    init.headers.set('Authorization', `Basic ${btoa(`${credentials.email}:${credentials.password}`)}`)
   }
   init.headers.set('Accept', 'application/json')
   init.headers.set('Content-Type', 'application/json')
@@ -80,13 +80,13 @@ function fetch (resource, init = null) {
 }
 
 export async function shouldLogin () {
-  if (!credentials.username) return true
+  if (!credentials.email) return true
   return (await fetch('/api/users')).status !== 200
 }
 
-export async function login (username, password) {
+export async function login (email, password) {
   await logout()
-  credentials.set({username, password})
+  credentials.set({email, password})
   if (await shouldLogin()) {
     credentials.clear()
     return false
@@ -109,14 +109,14 @@ async function setUserData () {
 
 export async function register (data) {
   credentials.clear()
-  const {username, password} = data
+  const {email, password} = data
   const res = await fetch('/api/users', {
     method: 'post',
     body: JSON.stringify(data)
   })
   const userDataOrErrors = await res.json()
   if (res.status === 201) {
-    credentials.set({username, password})
+    credentials.set({email, password})
     await setUserData()
     return true
   } else {
@@ -210,10 +210,10 @@ export async function updateNote (pk, data) {
   }
 }
 
-export async function getUsers ({search = null}) {
+export async function getUsers ({email = null}) {
   const query = []
-  if (search !== null) {
-    query.push(`search=${encodeURIComponent(search)}`)
+  if (email !== null) {
+    query.push(`email=${encodeURIComponent(email)}`)
   }
   return await fetch(`/api/users?${query.join('&')}`).then(res => res.json())
 }

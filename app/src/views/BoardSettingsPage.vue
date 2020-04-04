@@ -45,23 +45,23 @@
 
                                 <b-field style="margin-bottom: 2rem">
                                     <div class="user-grid">
-                                        <div class="membership is-adder box">
+                                        <form class="membership is-adder box"
+                                              @submit.prevent="addUser">
                                             <b-button @click="enableAdd = true" v-if="!enableAdd"
                                                       type="is-light"
                                                       icon-left="plus" title="Add Member" rounded
                                                       size="is-large"/>
-                                            <b-field label="Add new Member" label-position="inside"
-                                                     v-if="enableAdd">
-                                                <b-autocomplete :data="users"
-                                                                :loading="isLoadingUsers" autofocus
-                                                                @typing="searchUsers"
-                                                                @select="addMembership">
-                                                    <template slot-scope="props">
-                                                        <ProfileBadge :user="props.option"/>
-                                                    </template>
-                                                </b-autocomplete>
+                                            <b-field label="New Member Email Address"
+                                                     label-position="inside"
+                                                     v-if="enableAdd" grouped
+                                                     style="align-items: center">
+                                                <b-input type="email" v-model="newUserEmail"/>
+                                                <b-button native-type="submit" label="Add"
+                                                          icon-left="plus" type="is-light"
+                                                          :loading="isAddingUser"
+                                                          :disabled="isAddingUser"/>
                                             </b-field>
-                                        </div>
+                                        </form>
                                         <template v-for="(membership, index) in board.memberships">
                                             <MembershipEditor v-model="board.memberships[index]"
                                                               :can-disable-owner="canDisableOwner"
@@ -88,10 +88,8 @@
 </template>
 
 <script>
-  import {debounce} from 'throttle-debounce'
   import { getSettings, getUsers, updateBoard } from '../api'
   import MembershipEditor from '../components/MembershipEditor'
-  import ProfileBadge from '../components/ProfileBadge'
   import { createBoardMixin } from '../mixins'
 
   export default {
@@ -100,18 +98,17 @@
         requiredBoardAccessRight: 'is_owner'
       })
     ],
-    components: {ProfileBadge, MembershipEditor},
+    components: {MembershipEditor},
     data () {
       return {
         isLoading: false,
         board: null,
-        users: [],
-        isLoadingUsers: false,
         hasChanges: false,
+        isAddingUser: false,
         isSavingChanges: false,
         enableAdd: false,
         settings: null,
-
+        newUserEmail: ''
       }
     },
     computed: {
@@ -131,18 +128,25 @@
       async loadSettings () {
         this.settings = await getSettings()
       },
-      searchUsers: debounce(300,async function (name) {
-        if (!name.trim()) {
-          this.data = []
-          return
-        }
-        this.isLoadingUsers = true
+      async addUser () {
+        this.isAddingUser = true
         try {
-          this.users = (await getUsers({search: name})).filter(user => !this.currentUsers.includes(user.url))
+          const users = await getUsers({email: this.newUserEmail})
+          if (users.length > 0) {
+            this.addMembership(users[0])
+            this.newUserEmail = ''
+          } else {
+            this.$buefy.snackbar.open({
+              message: `Could not find a user with that email address.`,
+              type: 'is-danger',
+              position: 'is-top',
+              duration: 6000,
+            })
+          }
         } finally {
-          this.isLoadingUsers = false
+          this.isAddingUser = false
         }
-      }),
+      },
       addMembership (user) {
         this.board.memberships.unshift({
           user: user.url,

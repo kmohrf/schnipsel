@@ -3,6 +3,7 @@ import reversion
 from reversion.models import Version
 
 from schnipsel.core import models
+from schnipsel.core.util import get_email_localpart
 
 
 class DefaultUserMeta:
@@ -11,22 +12,15 @@ class DefaultUserMeta:
         "avatar",
         "label",
         "url",
-        "username",
     )
-    extra_kwargs = {
-        "url": {"view_name": "user-detail", "lookup_field": "username"},
-        "users": {"lookup_field": "username"},
-    }
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    avatar = serializers.HyperlinkedIdentityField(
-        "user-avatar", lookup_field="username"
-    )
+    avatar = serializers.HyperlinkedIdentityField("user-avatar")
     label = serializers.SerializerMethodField("_get_label")
 
     def _get_label(self, user):
-        return user.name if user.name else user.username
+        return user.name if user.name else get_email_localpart(user.email)
 
     class Meta(DefaultUserMeta):
         pass
@@ -36,9 +30,7 @@ class UserDetailSerializer(UserSerializer):
     password = serializers.CharField(write_only=True, required=False)
 
     def create(self, validated_data):
-        user = models.User.objects.create(
-            username=validated_data["username"], email=validated_data["email"]
-        )
+        user = models.User.objects.create(email=validated_data["email"])
         user.set_password(validated_data["password"])
         user.save()
         return user
@@ -58,13 +50,12 @@ class UserCreateSerializer(UserDetailSerializer):
 
 
 class UserUpdateSerializer(UserDetailSerializer):
-    username = serializers.ReadOnlyField()
     password = serializers.CharField(write_only=True, required=False)
 
 
 class BoardMembershipSerializer(serializers.ModelSerializer):
     user = serializers.HyperlinkedRelatedField(
-        "user-detail", lookup_field="username", queryset=models.User.objects
+        "user-detail", queryset=models.User.objects
     )
 
     class Meta:
