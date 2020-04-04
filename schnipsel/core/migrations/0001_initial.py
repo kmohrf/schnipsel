@@ -4,9 +4,7 @@ from django.conf import settings
 import django.contrib.auth.models
 import django.contrib.auth.validators
 from django.db import migrations, models
-import django.db.models.deletion
 import django.utils.timezone
-import schnipsel.core.models
 
 
 class Migration(migrations.Migration):
@@ -136,7 +134,7 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "users",
                 "abstract": False,
             },
-            managers=[("objects", django.contrib.auth.models.UserManager()),],
+            managers=[("objects", django.contrib.auth.models.UserManager())],
         ),
         migrations.CreateModel(
             name="Board",

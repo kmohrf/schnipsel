@@ -40,7 +40,7 @@ class BuildAssetsCommand(Command):
         )
         self.announce("Collecting assets for Django", level=distutils.log.INFO)
         subprocess.check_call(
-            [python_bin, "-m", "schnipsel", "collectstatic", "--no-input", "--clear",],
+            [python_bin, "-m", "schnipsel", "collectstatic", "--no-input", "--clear"],
             cwd=BASE_DIR,
             env={"SCHNIPSEL_SECRET_KEY": "packaging"},
         )
