@@ -79,6 +79,7 @@ class UserDetailSerializer(UserSerializer):
             "language",
             "name",
             "password",
+            "pk",
             "source",
         )
 
