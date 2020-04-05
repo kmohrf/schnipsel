@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar is-light has-shadow is-fixed-top" role="navigation"
+    <nav class="navbar is-light has-shadow is-dark is-fixed-top" role="navigation"
          aria-label="main navigation" v-if="isNavbarVisible">
         <div class="navbar-brand">
             <router-link :to="{ name: 'home' }" class="navbar-item">
