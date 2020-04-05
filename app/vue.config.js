@@ -21,5 +21,21 @@ module.exports = {
       '/media/': proxyOptions,
       '/static/': proxyOptions
     } : null
+  },
+  pwa: {
+    name: 'Schnipsel',
+    themeColor: '#7957d5',
+    msTileColor: '#7957d5',
+    manifestOptions: {
+      orientation: 'portrait',
+      categories: ['productivity']
+    },
+    iconPaths: {
+      favicon32: 'favicon.png',
+      favicon16: 'favicon-16.png',
+    },
+    workboxOptions: {
+      importWorkboxFrom: 'local'
+    }
   }
 }

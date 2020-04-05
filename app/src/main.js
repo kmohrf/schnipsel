@@ -8,6 +8,7 @@ import 'vue-swatches/dist/vue-swatches.min.css'
 import App from './App.vue'
 import router from './router'
 import Icon from './components/Icon'
+import './registerServiceWorker'
 
 Vue.component('Swatches', Swatches)
 Vue.directive('on-click-outside', onClickOutside)
