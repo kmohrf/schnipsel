@@ -92,6 +92,14 @@
       })
     ],
     components: {Note},
+    metaInfo () {
+      return {
+        title: this.board?.title,
+        meta: [
+          { name: 'description', content: this.board?.description }
+        ]
+      }
+    },
     data () {
       return {
         isLoading: false,

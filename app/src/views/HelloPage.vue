@@ -33,6 +33,12 @@
     export default {
       components: {
         LoginForm
+      },
+      metaInfo: {
+        title: 'Hello',
+        meta: [
+          { name: 'description', content: 'Schnipsel - a digital sticky note board' }
+        ]
       }
     }
 </script>

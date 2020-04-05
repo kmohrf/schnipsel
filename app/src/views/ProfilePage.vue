@@ -43,6 +43,11 @@
   export default {
     components: {Avatar},
     mixins: [userMixin],
+    metaInfo () {
+      return {
+        title: this.user?.label
+      }
+    },
     data () {
       return {
         hasChanges: false,

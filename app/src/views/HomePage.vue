@@ -33,6 +33,9 @@
   export default {
     components: {BoardPreview},
     mixins: [userMixin, userBoardsMixin],
+    metaInfo: {
+      title: 'Your Boards'
+    },
     data () {
       return {
         enableAdd: false,

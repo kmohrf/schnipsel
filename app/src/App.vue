@@ -11,6 +11,12 @@
 
   export default {
     components: {Navbar},
+    metaInfo: {
+      title: '',
+      titleTemplate (title) {
+        return title ? `${title} | Schnipsel` : 'Schnipsel'
+      }
+    },
     computed: {
       routerViewKey () {
         return this.$route.fullPath.split('#')[0]

@@ -1,6 +1,7 @@
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import Vue from 'vue'
+import VueMeta from 'vue-meta'
 import { VueMasonryPlugin } from 'vue-masonry';
 import { directive as onClickOutside } from 'vue-on-click-outside'
 import Swatches from 'vue-swatches'
@@ -26,6 +27,7 @@ Vue.use(Buefy, {
     }
   }
 })
+Vue.use(VueMeta)
 Vue.use(VueMasonryPlugin)
 
 Vue.config.productionTip = false

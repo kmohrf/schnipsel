@@ -48,7 +48,7 @@
                          @click="() => { isUserMenuOpen = false; isMenuOpen = false }">
                         <router-link :to="{ name: 'profile' }" class="navbar-item">
                             <b-icon icon="user" size="is-small"/>
-                            <span>Profile settings</span>
+                            <span>Your Profile</span>
                         </router-link>
                         <a class="navbar-item" @click.prevent="doLogout">
                             <b-icon icon="logout" size="is-small"/>

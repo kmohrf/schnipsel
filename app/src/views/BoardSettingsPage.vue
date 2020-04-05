@@ -99,6 +99,11 @@
       })
     ],
     components: {MembershipEditor},
+    metaInfo () {
+      return {
+        title: `${this.board?.title} Settings`
+      }
+    },
     data () {
       return {
         isLoading: false,
