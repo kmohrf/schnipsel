@@ -1,8 +1,44 @@
+import base64
+import hashlib
+import re
+
+from django.core.files.base import ContentFile
 from rest_framework import serializers
 import reversion
 from reversion.models import Version
 
 from schnipsel.core import models
+
+
+def parse_base64_data_uri(uri):
+    header, data = uri.split(",", 1)
+    match = re.match(r"data:(?P<mime>.+/.+);base64", header)
+    return match.group("mime"), base64.b64decode(data)
+
+
+class HyperlinkedIdentityFileField(serializers.HyperlinkedIdentityField):
+    def __init__(self, view_name=None, **kwargs):
+        read_only = kwargs.pop("read_only", False)
+        source = kwargs.pop("source", None)
+        super().__init__(view_name, **kwargs)
+        self.read_only = read_only
+        self.source = source or self.field_name
+
+    def to_representation(self, value):
+        url = super().to_representation(value.instance)
+        try:
+            url_hash = hashlib.md5(value.url.encode()).hexdigest()
+            return f"{url}?{url_hash}"
+        except ValueError:
+            return url
+
+    def to_internal_value(self, data):
+        if not data or not data.startswith("data:"):
+            raise serializers.SkipField()
+        mime_type, file_data = parse_base64_data_uri(data)
+        file_format = mime_type.split("/")[1]
+        filename = f"{self.field_name}-avatar.{file_format}"
+        return ContentFile(file_data, name=filename)
 
 
 class DefaultUserMeta:
@@ -15,7 +51,7 @@ class DefaultUserMeta:
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    avatar = serializers.HyperlinkedIdentityField("user-avatar")
+    avatar = HyperlinkedIdentityFileField("user-avatar")
     label = serializers.CharField(source="__str__", read_only=True)
 
     class Meta(DefaultUserMeta):
