@@ -49,7 +49,7 @@
                 <div class="board-grid-item"></div>
             </div>
 
-            <main class="section" v-if="notes.length > 0">
+            <main class="section" v-if="notes.length > 0" :lang="board ? board.language : null">
                 <div v-masonry="'notes'" transition-duration="0.3s" item-selector=".note"
                      :column-width="columnWidth" gutter="24" fit-width="true"
                      style="margin: 0 auto">
@@ -124,7 +124,9 @@
           .filter(index => index !== null)
       },
       userAccessRights () {
-        return this.board.memberships.find(membership => membership.user === this.user.url)
+        return this.user
+          ? this.board.memberships.find(membership => membership.user === this.user.url)
+          : {}
       }
     },
     methods: {

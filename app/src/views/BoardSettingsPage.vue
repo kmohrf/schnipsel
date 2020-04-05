@@ -1,7 +1,7 @@
 <template>
     <div>
-        <b-loading :active="true" v-if="!board"/>
-        <template v-if="board">
+        <b-loading :active="true" v-if="!(board && user)"/>
+        <template v-if="board && user">
             <section class="hero">
                 <div class="hero-body">
                     <header class="container">
