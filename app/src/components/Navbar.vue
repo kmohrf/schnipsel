@@ -3,6 +3,9 @@
          aria-label="main navigation" v-if="isNavbarVisible">
         <div class="navbar-brand">
             <router-link :to="{ name: 'home' }" class="navbar-item">
+                <div class="image">
+                    <img src="/favicon.svg" alt="" style="width: auto; margin-right: .5rem">
+                </div>
                 <strong>Schnipsel</strong>
             </router-link>
             <a role="button" class="navbar-burger" aria-label="menu" :aria-expanded="isMenuOpen"
