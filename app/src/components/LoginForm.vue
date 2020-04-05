@@ -49,22 +49,14 @@
     },
     computed: {
       errorMessages () {
-        return Object.fromEntries(
-          Object.entries(this.errors)
-            .map(([field, errors]) => [field, {
-              message: errors.join('\n\n'),
-              type: 'is-danger'
-            }])
-            .concat(
-              this.password === this.passwordRepeat
-                ? []
-                : [
-                  ['passwordRepeat', {
-                    message: 'Not equal with password',
-                    type: 'is-danger'
-                  }]
-                ])
-        )
+        const messages = formatErrors(this.errors)
+        if (this.password !== this.passwordRepeat) {
+          messages.passwordRepeat = {
+            message: 'Not equal with password',
+            type: 'is-danger'
+          }
+        }
+        return messages
       }
     },
     methods: {

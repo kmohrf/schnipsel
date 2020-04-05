@@ -25,3 +25,13 @@ export function createTimeMixin (name) {
     }
   }
 }
+
+export function formatErrors (errors) {
+  return Object.fromEntries(
+    Object.entries(errors)
+      .map(([field, errors]) => [field, {
+        message: errors.join('\n\n'),
+        type: 'is-danger'
+      }])
+  )
+}
