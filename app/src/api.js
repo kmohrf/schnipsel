@@ -235,6 +235,22 @@ export const getUser = (() => {
   }
 })()
 
+export async function updateUser (pk, data) {
+  const res = await fetch(`/api/users/${pk}`, {
+    method: 'put',
+    body: JSON.stringify(data)
+  })
+  const userDataOrErrors = await res.json()
+  if (res.status === 200) {
+    if (userData.user.pk === pk) {
+      userData.user = userDataOrErrors
+    }
+    return userDataOrErrors
+  } else {
+    throw new APIError(res.statusText, userDataOrErrors)
+  }
+}
+
 export const getSettings = (() => {
   let settings = null
 

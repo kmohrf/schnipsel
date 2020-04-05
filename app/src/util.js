@@ -26,6 +26,22 @@ export function createTimeMixin (name) {
   }
 }
 
+export function rsplit(text, delimiter) {
+  // TODO: late-night brain meltdown… there is most likely a better way to do this
+  return text
+    .split('')
+    .reverse()
+    .join('')
+    .split(delimiter)
+    .map(token =>
+      token
+        .split('')
+        .reverse()
+        .join('')
+    )
+    .reverse()
+}
+
 export function formatErrors (errors) {
   return Object.fromEntries(
     Object.entries(errors)
@@ -34,4 +50,19 @@ export function formatErrors (errors) {
         type: 'is-danger'
       }])
   )
+}
+
+export async function* readFiles (files, loader = 'readAsDataURL') {
+  function loadFile (file) {
+    return new Promise (resolve => {
+      const reader = new window.FileReader()
+      reader.addEventListener('load', () => {
+        resolve(reader.result)
+      })
+      reader[loader](file)
+    })
+  }
+  for (const file of files) {
+    yield await loadFile(file)
+  }
 }

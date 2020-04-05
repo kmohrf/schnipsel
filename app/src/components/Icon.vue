@@ -18,7 +18,8 @@
     PlusIcon,
     EditIcon,
     Trash2Icon,
-    RefreshCwIcon
+    RefreshCwIcon,
+    UploadIcon
   } from 'vue-feather-icons'
 
   export default {
@@ -46,7 +47,8 @@
           'plus': PlusIcon,
           'edit': EditIcon,
           'delete': Trash2Icon,
-          'refresh': RefreshCwIcon
+          'refresh': RefreshCwIcon,
+          'upload': UploadIcon
         }[Array.isArray(this.icon) ? this.icon[1] : this.icon]
       }
     }
