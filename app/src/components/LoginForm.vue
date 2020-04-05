@@ -34,6 +34,7 @@
 
 <script>
   import { register, login } from '../api'
+  import { formatErrors } from '../util'
 
   export default {
     data () {
