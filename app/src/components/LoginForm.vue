@@ -22,6 +22,9 @@
             <b-button type="is-text" @click="mode = 'register'" v-if="mode === 'login'">
                 Register
             </b-button>
+            <b-button type="is-text" @click="mode = 'login'" v-else>
+                Login
+            </b-button>
 
             <b-button native-type="submit" @click="doAction" type="is-primary" icon-left="login"
                       style="margin-left: auto"
