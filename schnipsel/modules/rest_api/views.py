@@ -81,7 +81,9 @@ class UserViewSet(viewsets.ModelViewSet):
                 request.build_absolute_uri(user.avatar_thumbnail.url)
             )
         token = hashlib.md5(f"schnipsel-${user.email}".encode()).hexdigest()
-        return HttpTemporaryRedirect(f"https://api.adorable.io/avatars/128/{token}.png")
+        return HttpTemporaryRedirect(
+            f"https://api.hello-avatar.com/adorables/128/{token}.png"
+        )
 
 
 class BoardViewSet(viewsets.ModelViewSet):
