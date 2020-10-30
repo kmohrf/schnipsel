@@ -3,8 +3,8 @@
         <div class="card-content" v-if="myNote">
             <b-field label="Title" label-position="inside" grouped>
                 <b-input v-model="myNote.title" expanded ref="title"/>
-                <Swatches v-model="myNote.color" :colors="noteColors" shapes="circles"
-                          popover-to="left" tabindex="-1"/>
+                <Swatches v-model="myNote.color" :swatches="noteColors" shapes="circles"
+                          popover-x="left" popover-y="bottom" tabindex="-1"/>
             </b-field>
             <b-field label="Content" label-position="inside">
                 <template v-slot:message>

@@ -5,7 +5,7 @@ import VueMeta from 'vue-meta'
 import { VueMasonryPlugin } from 'vue-masonry';
 import { directive as onClickOutside } from 'vue-on-click-outside'
 import Swatches from 'vue-swatches'
-import 'vue-swatches/dist/vue-swatches.min.css'
+import 'vue-swatches/dist/vue-swatches.css'
 import App from './App.vue'
 import router from './router'
 import Icon from './components/Icon'
