@@ -9,6 +9,7 @@ APP_SETTINGS=$APP_ETC/settings.py
 APP_PID=/var/run/uwsgi/app/$APP_USER/pid
 APP_UWSGI_CONFIG=/etc/uwsgi/apps-enabled/$APP_USER.ini
 APP_BACKUPS=/var/backups/$APP_USER
+APP_MEDIA=$APP_HOME/media
 
 if [ "$1" = "configure" ]; then
     if ! getent passwd "$APP_USER" >/dev/null; then
@@ -30,6 +31,7 @@ if [ "$1" = "configure" ]; then
 
     # create secure user dirs
     install -d -o "$APP_USER" -g nogroup -m 700 "$APP_BACKUPS"
+    install -d -o "$APP_USER" -g "$APP_USER" -m 755 "$APP_MEDIA"
 
     if [ -f "$APP_PID" ]; then
         printf "reloading $APP_USER app server... "
