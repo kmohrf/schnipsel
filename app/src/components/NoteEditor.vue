@@ -6,8 +6,10 @@
                 <Swatches v-model="myNote.color" :colors="noteColors" shapes="circles"
                           popover-to="left" tabindex="-1"/>
             </b-field>
-            <b-field label="Content" label-position="inside"
-                     message="You can use Markdown to markup the content. See <a href='https://commonmark.org/help/' target='_blank' tabindex='-1'>here</a> how to do it.">
+            <b-field label="Content" label-position="inside">
+                <template v-slot:message>
+                    You can use Markdown to markup the content. See <a href='https://commonmark.org/help/' target='_blank' tabindex='-1'>here</a> how to do it.
+                </template>
                 <b-input type="textarea" v-model="myNote.content" class="content-editor"/>
             </b-field>
         </div>

@@ -5,8 +5,10 @@
         <div class="container" v-if="board">
             <section class="section">
                 <h1 class="title is-1">{{ board.title }}</h1>
-                <b-field
-                        message="You can search for multiple words. Use asterisks for partial matches (*ism) or minus for exclusions (-help). See <a href='https://lunrjs.com/guides/searching.html' target='_blank'>reference</a> for more.">
+                <b-field>
+                    <template v-slot:message>
+                      You can search for multiple words. Use asterisks for partial matches (*ism) or minus for exclusions (-help). See <a href='https://lunrjs.com/guides/searching.html' target='_blank'>reference</a> for more.
+                    </template>
                     <b-field grouped style="margin-bottom: 0">
                         <b-field expanded label="Search" label-position="on-border"
                                  style="margin-bottom: 0">
