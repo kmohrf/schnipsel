@@ -28,9 +28,11 @@
                         </p>
                         <p class="control" v-if="userAccessRights.can_modify">
                             <button type="button" class="button is-large is-primary"
-                                    @click="addNote">
+                                    @click="addNote" accesskey="a">
                                 <b-icon icon="plus" style="margin: 0 calc(-0.375em - 1px)"/>
-                                <span class="is-hidden-mobile" style="margin-left: 0.375em">Add Note</span>
+                                <span class="is-hidden-mobile" style="margin-left: 0.375em">
+                                    <span class="is-accesskey">A</span>dd Note
+                                </span>
                             </button>
                         </p>
                     </b-field>

@@ -5,13 +5,15 @@
 
             <div class="grid">
                 <div class="board-preview box is-adder">
-                    <b-button @click="enableAdd = true" v-if="!enableAdd" type="is-light"
-                              icon-left="plus" title="Create Board" rounded size="is-large"/>
+                    <b-button @click="enableNewBoardEditor" v-if="!enableAdd" type="is-light"
+                              accesskey="a" icon-left="plus" title="Create Board" rounded
+                              size="is-large"/>
                     <form style="display: flex; flex-direction: column; align-items: center"
                           @submit.prevent="doCreateBoard" v-if="enableAdd">
                         <b-field>
                             <b-field label="Board name" label-position="inside">
-                                <b-input v-model="newBoardName" :disabled="isCreating"/>
+                                <b-input v-model="newBoardName" :disabled="isCreating"
+                                         ref="boardName"/>
                             </b-field>
                         </b-field>
                         <b-field>
@@ -44,6 +46,11 @@
       }
     },
     methods: {
+      async enableNewBoardEditor () {
+        this.enableAdd = true
+        await this.$nextTick()
+        this.$refs.boardName.focus()
+      },
       async doCreateBoard () {
         try {
           this.isCreating = true

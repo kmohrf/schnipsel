@@ -1,0 +1,16 @@
+@media (any-pointer: fine) {
+  .is-accesskey {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: calc(100% - .05em);
+      left: 0;
+      right: 100%;
+      width: 100%;
+      border-bottom: 1px solid currentColor;
+      opacity: .55;
+    }
+  }
+}

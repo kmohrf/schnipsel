@@ -7,21 +7,21 @@
                           popover-to="left" tabindex="-1"/>
             </b-field>
             <b-field label="Content" label-position="inside"
-                     message="You can use Markdown to markup the content. See <a href='https://commonmark.org/help/' target='_blank'>here</a> how to do it.">
+                     message="You can use Markdown to markup the content. See <a href='https://commonmark.org/help/' target='_blank' tabindex='-1'>here</a> how to do it.">
                 <b-input type="textarea" v-model="myNote.content" class="content-editor"/>
             </b-field>
         </div>
         <footer class="card-footer">
             <div class="buttons">
+                <b-button :label="note.pk ? 'Save Changes' : 'Create Note'"
+                          type="is-primary" icon-left="save" native-type="submit"
+                          :loading="isSaving" :disabled="isExecutingAction"
+                          style="margin-left: auto; margin-right: 0; order: 10"/>
                 <b-button label="Cancel" @click="$emit('close')" class="is-hidden-mobile"
                           :disabled="isExecutingAction"/>
                 <b-button label="Delete Note" type="is-danger" icon-left="delete"
                           :loading="isDeleting" :disabled="isExecutingAction"
                           @click="removeNote" v-if="note.pk"/>
-                <b-button :label="note.pk ? 'Save Changes' : 'Create Note'"
-                          type="is-primary" icon-left="save" native-type="submit"
-                          :loading="isSaving" :disabled="isExecutingAction"
-                          style="margin-left: auto"/>
             </div>
         </footer>
     </form>

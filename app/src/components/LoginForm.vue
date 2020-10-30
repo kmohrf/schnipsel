@@ -19,17 +19,17 @@
         </div>
 
         <div class="buttons">
+            <b-button native-type="submit" @click="doAction" type="is-primary" icon-left="login"
+                      style="margin-left: auto; margin-right: 0; order: 10"
+                      :disabled="isLoading" :loading="isLoading">
+              {{ mode === 'register' ? 'Register' : 'Login' }}
+            </b-button>
+
             <b-button type="is-text" @click="mode = 'register'" v-if="mode === 'login'">
                 Register
             </b-button>
             <b-button type="is-text" @click="mode = 'login'" v-else>
                 Login
-            </b-button>
-
-            <b-button native-type="submit" @click="doAction" type="is-primary" icon-left="login"
-                      style="margin-left: auto"
-                      :disabled="isLoading" :loading="isLoading">
-                {{ mode === 'register' ? 'Register' : 'Login' }}
             </b-button>
         </div>
     </form>
