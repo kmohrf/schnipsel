@@ -1,0 +1,36 @@
+# Schnipsel configuration
+# copy this file to /etc/schnipsel/settings.py
+
+# Directory where media files are stored.
+# This is already the right place if you’ve used the Debian package.
+MEDIA_ROOT = "/var/lib/schnipsel/media"
+
+# the secret key is used to encrypt sessions.
+# YOU MUST CHANGE IT
+SECRET_KEY = "CHANGE_ME_TO_A_LONG_RANDOM_STRING"
+
+# Database settings
+# We recommend PostgreSQL, but you can use any of the
+# database types Django supports.
+# see: https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
+        'NAME': 'schnipsel',
+        'USER': 'schnipsel',
+        'PASSWORD': 'MY_DATABASE_PASSWORD',
+    }
+}
+
+# ALLOWED_HOSTS should contain the domain from which you will serve schnipsel
+ALLOWED_HOSTS = ["example.com"]
+
+# You might want to uncomment these if you use a reverse proxy that
+# terminates TLS connections
+# USE_X_FORWARDED_HOST = True
+# USE_X_FORWARDED_PORT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# A full list of available settings can be found in the Django documentation
+# see: https://docs.djangoproject.com/en/2.2/ref/settings/
