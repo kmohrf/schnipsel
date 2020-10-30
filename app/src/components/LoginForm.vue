@@ -26,10 +26,10 @@
             </b-button>
 
             <b-button type="is-text" @click="mode = 'register'" v-if="mode === 'login'">
-                Register
+                Register now
             </b-button>
             <b-button type="is-text" @click="mode = 'login'" v-else>
-                Login
+                Login instead
             </b-button>
         </div>
     </form>
