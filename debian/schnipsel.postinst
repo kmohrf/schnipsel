@@ -2,18 +2,28 @@
 
 set -eu
 
-APP_USER=schnipsel
-APP_HOME=/var/lib/$APP_USER
-APP_ETC=/etc/$APP_USER
+APP_USER=_schnipsel
+APP_HOME=/var/lib/schnipsel
+APP_ETC=/etc/schnipsel
 APP_SETTINGS=$APP_ETC/settings.py
-APP_PID=/var/run/uwsgi/app/$APP_USER/pid
-APP_UWSGI_CONFIG=/etc/uwsgi/apps-enabled/$APP_USER.ini
-APP_BACKUPS=/var/backups/$APP_USER
+APP_PID=/var/run/uwsgi/app/schnipsel/pid
+APP_UWSGI_CONFIG=/etc/uwsgi/apps-enabled/schnipsel.ini
+APP_BACKUPS=/var/backups/schnipsel
 APP_MEDIA=$APP_HOME/media
 
 if [ "$1" = "configure" ]; then
+    if getent passwd schnipsel >/dev/null; then
+        if usermod --login "$APP_USER" schnipsel; then
+            groupmod --new-name "$APP_USER" schnipsel
+        else
+            echo "==> could not rename schnipsel user and group to $APP_USER. You must do that manually." >&2
+        fi
+    fi
+
     if ! getent passwd "$APP_USER" >/dev/null; then
-        adduser --quiet --system --group --disabled-password \
+        # adduser still recognizes usernames with leading underscores as bad name
+        # even though the current debian packaging guidelines enforces this.
+        adduser --quiet --system --group --disabled-password --force-badname \
             --home "$APP_HOME" "$APP_USER"
     fi
 

@@ -2,7 +2,7 @@
 
 set -eu
 
-EXEC_USER=schnipsel
+EXEC_USER=_schnipsel
 EXEC_BASE=/usr/share/schnipsel
 
 if [ "$(id -nu)" = "$EXEC_USER" ]; then

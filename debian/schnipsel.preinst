@@ -2,8 +2,8 @@
 
 set -eu
 
-APP_USER=schnipsel
-APP_ETC=/etc/$APP_USER
+APP_USER=_schnipsel
+APP_ETC=/etc/schnipsel
 APP_SETTINGS=$APP_ETC/settings.py
 
 if [ -f "$APP_SETTINGS" ]; then
