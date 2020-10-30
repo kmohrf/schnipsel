@@ -113,15 +113,22 @@ async function setUserData () {
 }
 
 export async function register (data) {
+  // logout any existing sessions
   await logout()
+  // fetch the login endpoint we use for authentication
+  const {login_endpoint: loginEndpoint} = await getLoginInfo()
+  // fetch the login page, so it sets csrf cookies
+  await window.fetch(loginEndpoint)
+
+  // create account
   const res = await fetch('/api/users', {
     method: 'post',
     body: JSON.stringify(data)
   })
   const userDataOrErrors = await res.json()
+
   if (res.status === 201) {
-    await setUserData()
-    return true
+    return await login(data.email, data.password)
   } else {
     throw new APIError(res.statusText, userDataOrErrors)
   }
