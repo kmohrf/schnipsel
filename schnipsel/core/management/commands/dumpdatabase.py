@@ -57,7 +57,9 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("--prefix", default="", help="prefix for the filename")
         parser.add_argument(
-            "--output-dir", default=settings.BACKUP_PATH, help="backup storage dir",
+            "--output-dir",
+            default=settings.BACKUP_PATH,
+            help="backup storage dir",
         )
         parser.add_argument("--output-file", default=None, help="backup filename")
 

@@ -145,7 +145,9 @@ class SettingsViewSet(viewsets.GenericViewSet):
                     value_name="name",
                 ),
                 "ui_language_choices": _choices_to_dicts(
-                    models.SUPPORTED_UI_LANGAUGES, key_name="code", value_name="name",
+                    models.SUPPORTED_UI_LANGAUGES,
+                    key_name="code",
+                    value_name="name",
                 ),
             }
         )

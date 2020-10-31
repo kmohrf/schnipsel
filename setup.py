@@ -36,7 +36,8 @@ class BuildAssetsCommand(Command):
         )
         self.announce("Building web app with npm", level=distutils.log.INFO)
         subprocess.check_call(
-            clean_env_prefix + ["npm", "run", "build"], cwd=app_path,
+            clean_env_prefix + ["npm", "run", "build"],
+            cwd=app_path,
         )
         self.announce("Collecting assets for Django", level=distutils.log.INFO)
         subprocess.check_call(
