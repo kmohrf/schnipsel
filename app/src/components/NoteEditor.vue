@@ -6,12 +6,18 @@
                 <Swatches v-model="myNote.color" :swatches="noteColors" shapes="circles"
                           popover-x="left" popover-y="bottom" tabindex="-1"/>
             </b-field>
-            <b-field label="Content" label-position="inside">
-                <template v-slot:message>
-                    You can use Markdown to markup the content. See <a href='https://commonmark.org/help/' target='_blank' tabindex='-1'>here</a> how to do it.
-                </template>
-                <b-input type="textarea" v-model="myNote.content" class="content-editor"/>
-            </b-field>
+            <div style="position: relative">
+              <b-field label="Content" label-position="inside">
+                  <template v-slot:message>
+                      You can use Markdown to markup the content. See <a href='https://commonmark.org/help/' target='_blank' tabindex='-1'>here</a> how to do it.
+                  </template>
+                  <b-input type="textarea" v-model="myNote.content" ref="content" class="content-editor"/>
+              </b-field>
+              <b-button type="is-default" size="is-small" @click="addTask" accesskey="t"
+                        style="position: absolute; right: .5em; top: .5em;">
+                Add <span class="is-accesskey">T</span>ask
+              </b-button>
+            </div>
         </div>
         <footer class="card-footer">
             <div class="buttons">
@@ -63,6 +69,10 @@
       }
     },
     methods: {
+      addTask () {
+        this.myNote.content += '\n* [ ] '
+        this.$refs.content.focus()
+      },
       async saveChanges () {
         try {
           this.isSaving = true
