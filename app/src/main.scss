@@ -14,3 +14,9 @@
     }
   }
 }
+
+.content ul:first-child,
+.content ol:first-child,
+.content dl:first-child {
+  margin-top: 0;
+}
