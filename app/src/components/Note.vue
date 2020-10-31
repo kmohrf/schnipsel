@@ -4,7 +4,7 @@
             <h2 class="has-text-weight-bold">{{ note.title }}</h2>
         </header>
         <div class="note-body">
-            <div class="content" v-html="noteContent"></div>
+            <div class="content" v-html="noteContent" @change="toggleNoteTask" ref="content"></div>
         </div>
         <footer class="note-footer">
             <time class="is-size-7"
@@ -21,6 +21,20 @@
   import { formatDistance } from 'date-fns'
   import { createTimeMixin, renderMarkdown } from '../util'
   import NoteEditor from './NoteEditor'
+  import { updateNote } from '@/api'
+
+  function toggleTask (noteContent, newState, numOccurrence) {
+    const taskRegex = /^(\s*(?:[*+-]|\d+[.)])\s*)(\[[ xX]\]) /gm
+    let occurrence = 0
+
+    return noteContent.replace(taskRegex, (match, leadingContent) => {
+      if (occurrence++ === numOccurrence) {
+        return leadingContent + (newState ? '[x] ' : '[ ] ')
+      } else {
+        return match
+      }
+    })
+  }
 
   export default {
     mixins: [
@@ -70,6 +84,15 @@
             input: note => { this.$emit('input', note) }
           }
         })
+      },
+      toggleNoteTask (event) {
+        if (event.target.nodeName === 'INPUT' && event.target.getAttribute('type') === 'checkbox') {
+          const inputIndex = Array.from(this.$refs.content.querySelectorAll('input[type="checkbox"]')).indexOf(event.target)
+          updateNote(this.note.pk, {
+            ...this.note,
+            content: toggleTask(this.note.content, event.target.checked, inputIndex)
+          })
+        }
       }
     },
     watch: {

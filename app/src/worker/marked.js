@@ -18,5 +18,11 @@ expose(function (content, options = {}) {
             ${text}
           </h${level}>`
   }
+  renderer.checkbox = function (checked) {
+    return `<input ${checked ? 'checked="" ' : ''}type="checkbox"${this.options.xhtml ? ' /' : ''}> `
+  }
+  renderer.listitem = function (text, isTask) {
+    return `<li>${isTask ? `<label class="task">${text}</label>` : text}</li>` + '\n'
+  }
   return marked(content, {renderer})
 })
