@@ -1,4 +1,4 @@
 debian/system-files/schnipselctl usr/bin
 debian/system-files/settings.py.dist etc/schnipsel
-debian/schnipsel.conf etc/nginx/snippets
-debian/schnipsel.ini etc/uwsgi/apps-available
+debian/system-files/schnipsel.conf etc/nginx/snippets
+debian/system-files/schnipsel.ini etc/uwsgi/apps-available
