@@ -29,17 +29,3 @@
     }
   }
 </script>
-
-<style lang="scss">
-    .is-adder {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-
-        > .button {
-            width: 3em;
-            height: 3em;
-        }
-    }
-</style>
