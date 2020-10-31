@@ -41,7 +41,7 @@ test:
 	@true
 
 .PHONY: lint
-format_code:
-	black setup.py schnipsel
+lint:
 	flake8 .
+	black --check --exclude 'migrations/' setup.py schnipsel
 	(cd app; npm run lint;)
