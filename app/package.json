@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
     "debounce": "^1.2.0",
+    "dompurify": "^2.2.0",
     "lunr": "^2.3.9",
     "lunr-languages": "^1.4.0",
     "marked": "^1.2.2",

@@ -1,6 +1,8 @@
 import { wrap } from 'comlink'
 import Vue from 'vue'
-import MarkedWorker from 'worker-loader!./worker/marked';
+import MarkedWorker from 'worker-loader!./worker/marked'
+
+const DOMPurify = import('dompurify').then(m => m.default)
 
 const time = Vue.observable({
   now: new Date(),
@@ -9,7 +11,8 @@ const time = Vue.observable({
 
 export const renderMarkdown = (renderer => {
   return async function (content, options) {
-    return await renderer(content, options)
+    const markdown = await renderer(content, options)
+    return (await DOMPurify).sanitize(markdown)
   }
 })(wrap(new MarkedWorker))
 
