@@ -9,13 +9,6 @@ const time = Vue.observable({
   nowMinute: new Date(),
 })
 
-export const renderMarkdown = (renderer => {
-  return async function (content, options) {
-    const markdown = await renderer(content, options)
-    return (await DOMPurify).sanitize(markdown)
-  }
-})(wrap(new MarkedWorker))
-
 setInterval(() => { time.now = new Date() }, 1000)
 setInterval(() => { time.nowMinute = new Date() }, 1000 * 60)
 
@@ -28,6 +21,13 @@ export function createTimeMixin (name) {
     }
   }
 }
+
+export const renderMarkdown = (renderer => {
+  return async function (content, options) {
+    const markdown = await renderer(content, options)
+    return (await DOMPurify).sanitize(markdown)
+  }
+})(wrap(new MarkedWorker))
 
 export function rsplit(text, delimiter) {
   // TODO: late-night brain meltdown… there is most likely a better way to do this
