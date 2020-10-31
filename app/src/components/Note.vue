@@ -85,13 +85,14 @@
           }
         })
       },
-      toggleNoteTask (event) {
+      async toggleNoteTask (event) {
         if (event.target.nodeName === 'INPUT' && event.target.getAttribute('type') === 'checkbox') {
           const inputIndex = Array.from(this.$refs.content.querySelectorAll('input[type="checkbox"]')).indexOf(event.target)
-          updateNote(this.note.pk, {
+          const newNote = await updateNote(this.note.pk, {
             ...this.note,
             content: toggleTask(this.note.content, event.target.checked, inputIndex)
           })
+          this.$emit('input', newNote)
         }
       }
     },
