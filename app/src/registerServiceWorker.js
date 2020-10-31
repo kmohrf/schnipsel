@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
+import { setRegistration } from './update'
 
 if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -19,13 +20,8 @@ if (process.env.NODE_ENV === 'production') {
     updatefound () {
       console.log('New content is downloading.')
     },
-    updated () {
-      document.body.insertAdjacentHTML('beforeend', `
-<div class="updater notification">
-  <p>An update is available.</p>
-  <button onclick="location.reload(true)" class="button is-primary">Reload Now</button>
-</div>
-`)
+    updated (registration) {
+      setRegistration(registration)
     },
     offline () {
       console.log('No internet connection found. App is running in offline mode.')

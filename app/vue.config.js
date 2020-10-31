@@ -34,8 +34,10 @@ module.exports = {
       favicon32: 'favicon.png',
       favicon16: 'favicon-16.png',
     },
+    workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      importWorkboxFrom: 'local'
+      importWorkboxFrom: 'local',
+      swSrc: 'src/service-worker.js'
     }
   }
 }
