@@ -43,10 +43,16 @@ if [ "$1" = "configure" ]; then
     install -d -o "$APP_USER" -g nogroup -m 700 "$APP_BACKUPS"
     install -d -o "$APP_USER" -g "$APP_USER" -m 755 "$APP_MEDIA"
 
+    schnipselctl collectstatic --no-input --clear
+
     if [ -f "$APP_PID" ]; then
         printf "reloading $APP_USER app server... "
         kill -HUP "$(cat "$APP_PID")" 2>/dev/null && echo "ok" || echo "failed"
     fi
+fi
+
+if [ "$1" = "triggered" ]; then
+    schnipselctl collectstatic --no-input --clear
 fi
 
 set +eu

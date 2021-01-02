@@ -1,0 +1,8 @@
+# related django packages
+# source: make list-deb-triggers
+interest-noawait /usr/lib/python3/dist-packages/django
+interest-noawait /usr/lib/python3/dist-packages/django_filters
+interest-noawait /usr/lib/python3/dist-packages/django_python3_ldap
+interest-noawait /usr/lib/python3/dist-packages/imagekit
+interest-noawait /usr/lib/python3/dist-packages/rest_framework
+interest-noawait /usr/lib/python3/dist-packages/reversion

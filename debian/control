@@ -23,8 +23,26 @@ Package: schnipsel
 Architecture: all
 Depends:
  ${misc:Depends},
- ${python3:Depends},
  adduser,
+ python3-schnipsel,
+Recommends:
+ ${misc:Recommends},
+ schnipsel-webapp,
+Suggests:
+ uwsgi,
+ uwsgi-plugin-python3,
+ nginx,
+Description: Digital sticky note board
+
+Package: schnipsel-webapp
+Architecture: all
+Description: PWA assets for schnipsel
+
+Package: python3-schnipsel
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
  python3-django (>= 2.2),
  python3-djangorestframework,
  python3-django-filters (>= 2.1.0),
@@ -33,7 +51,4 @@ Depends:
  python3-pil,
 Suggests:
  python3-django-python3-ldap,
- uwsgi,
- uwsgi-plugin-python3,
- nginx,
-Description: digital sticky note board
+Description: Python module for the schnipsel web application

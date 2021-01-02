@@ -1,26 +1,32 @@
-image: git-registry.hack-hro.de:443/kmohrf/schnipsel/build:buster
+default:
+  image: git-registry.hack-hro.de:443/kmohrf/schnipsel/build:buster
 
 stages:
   - test
   - build
   - deploy
 
-make_deb_package:
+run_tests:
+  stage: test
+  before_script:
+    - pip3 install --upgrade black
+  script:
+    - make lint test BLACK_BIN='/usr/local/bin/black'
+  after_script:
+    - make test-report-short
+    - python3 -m coverage xml
+  coverage: '/Code coverage: \d+%/'
+  artifacts:
+    reports:
+      cobertura: coverage.xml
+
+build_deb_packages:
   stage: build
   tags:
     - fast-io
     - fast-network
-  only:
-    - tags
-    - triggers
-    - schedules
-    - merge_requests
-    - branches
-    - web
   script:
-    - dpkg-buildpackage --no-sign
-    - mkdir -p build/deb
-    - mv ../*.deb ../*.changes ../*.buildinfo ../*.git ../*.dsc build/deb
+    - make dist-deb
   artifacts:
     paths:
       - build/deb

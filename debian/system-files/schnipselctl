@@ -3,10 +3,15 @@
 set -eu
 
 EXEC_USER=_schnipsel
-EXEC_BASE=/usr/share/schnipsel
+
+. /etc/default/schnipsel
+
+export PYTHONPATH
+export DJANGO_SETTINGS_MODULE
+export SCHNIPSEL_DATA_DIR
 
 if [ "$(id -nu)" = "$EXEC_USER" ]; then
-    PYTHONPATH="$EXEC_BASE" exec python3 -m schnipsel "$@"
+    exec python3 -m schnipsel "$@"
 elif [ "$(id -u)" = 0 ]; then
     exec su -s "$0" "$EXEC_USER" -- "$@"
 else

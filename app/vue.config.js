@@ -10,9 +10,7 @@ const proxyOptions = {
 module.exports = {
   integrity: true,
   parallel: false,
-  // 2 x app is intentional as django collectstatic will otherwise merge
-  // the directory without the app prefix
-  outputDir: '../build/app/app',
+  outputDir: '../build/app',
   devServer: {
     proxy: proxyTarget !== 'disable' ? {
       '/api/': proxyOptions,

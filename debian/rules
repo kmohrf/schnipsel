@@ -1,14 +1,16 @@
 #!/usr/bin/make -f
 
-INSTALL_DIR=/usr/share/schnipsel
-
-export PYBUILD_INSTALL_ARGS=\
-  --install-lib=$(INSTALL_DIR) \
-  --install-scripts=$(INSTALL_DIR) \
-  --install-data=$(INSTALL_DIR)
-export PYBUILD_DESTDIR=debian/schnipsel
 export PYBUILD_NAME=schnipsel
-#export PYBUILD_DISABLE=test
+export PYBUILD_DISABLE=test
 
 %:
-	dh $@ --package schnipsel --with python3 --buildsystem=pybuild
+	dh $@ --package=python3-schnipsel --with=python3 --buildsystem=pybuild
+	dh $@ --package=schnipsel
+	dh $@ --package=schnipsel-webapp
+
+.PHONY: override_dh_auto_install
+override_dh_auto_install:
+	dh_auto_install --package=python3-schnipsel --destdir=debian/python3-schnipsel
+	if echo "$$DH_INTERNAL_OPTIONS" | sed 's/-O/\n/g' | grep -qF -- '--package=schnipsel-webapp'; then \
+		$(MAKE) assets-install DESTDIR=$$(realpath debian/schnipsel-webapp); \
+	fi
