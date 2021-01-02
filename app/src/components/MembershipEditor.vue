@@ -11,14 +11,14 @@
         </b-field>
         <b-field grouped>
             <b-field style="margin-bottom: 0">
-                <b-switch v-model="membership.can_modify"
-                          :disabled="membership.is_owner">Allow changes
-                </b-switch>
+                <b-switch v-model="localMembership.can_modify"
+                          :disabled="membership.is_owner"
+                >Allow changes</b-switch>
             </b-field>
             <b-field style="margin-bottom: 0">
-                <b-switch v-model="membership.is_owner"
-                          :disabled="membership.is_owner && !canDisableOwner">Is Owner
-                </b-switch>
+                <b-switch v-model="localMembership.is_owner"
+                          :disabled="membership.is_owner && !canDisableOwner"
+                >Is Owner</b-switch>
             </b-field>
         </b-field>
     </div>
@@ -53,12 +53,13 @@
     },
     data () {
       return {
-        user: null
+        user: null,
+        localMembership: {...this.membership}
       }
     },
     watch: {
-      membership (membership) {
-        this.$emit('input', {...membership})
+      localMembership (localMembership) {
+        this.$emit('input', {...localMembership})
       }
     },
     async created () {
