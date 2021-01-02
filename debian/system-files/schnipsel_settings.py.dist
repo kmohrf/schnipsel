@@ -1,13 +1,15 @@
 # Schnipsel configuration
-# copy this file to /etc/schnipsel/settings.py
+# copy this file to /etc/schnipsel/schnipsel_settings.py
+from schnipsel.settings import *
 
-# Directory where media files are stored.
+# Directory where media and static files are stored.
 # This is already the right place if you’ve used the Debian package.
 MEDIA_ROOT = "/var/lib/schnipsel/media"
+STATIC_ROOT = "/var/lib/schnipsel/static"
 
 # the secret key is used to encrypt sessions.
 # YOU MUST CHANGE IT
-SECRET_KEY = "CHANGE_ME_TO_A_LONG_RANDOM_STRING"
+# SECRET_KEY = "CHANGE_ME_TO_A_LONG_RANDOM_STRING"
 
 # Database settings
 # We recommend PostgreSQL, but you can use any of the

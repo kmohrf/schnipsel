@@ -10,10 +10,13 @@ __pycache__/
 /build/
 /.pybuild/
 /.tox/
+.coverage*
 /debian/*debhelper*
 /debian/*.substvars
 /debian/files
-/debian/schnipsel
+/debian/python3-schnipsel/
+/debian/schnipsel/
+/debian/schnipsel-webapp/
 
 node_modules/
 app/dist/

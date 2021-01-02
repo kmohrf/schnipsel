@@ -14,7 +14,14 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+DATA_DIR = os.environ.get(
+    "SCHNIPSEL_DATA_DIR",
+    (
+        os.path.join(BASE_DIR, "data")
+        if os.access(BASE_DIR, os.W_OK)
+        else os.path.expanduser("~")
+    ),
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -105,9 +112,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "data", "media")
+MEDIA_ROOT = os.path.join(DATA_DIR, "media")
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "schnipsel", "static")
+STATIC_ROOT = os.path.join(DATA_DIR, "static")
 AUTH_USER_MODEL = "core.User"
 APPEND_SLASH = False
 REST_FRAMEWORK = {
@@ -118,16 +125,18 @@ REST_FRAMEWORK = {
     ],
 }
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "build", "app"),)
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}}
-BACKUP_PATH = "/var/backups/schnipsel"
+BACKUP_PATH = os.path.join(DATA_DIR, "backups")
 SECRET_KEY = os.environ.get("SCHNIPSEL_SECRET_KEY", None)
 
+
 try:
+    # this is only for development purposes
+    # use the DJANGO_SETTINGS_MODULE environment variable to define a runtime module
+    # and run `from schnipsel.settings import *` from there
     from .local_settings import *  # noqa: F401, F403
 except ImportError:
     pass
