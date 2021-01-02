@@ -9,6 +9,7 @@ __pycache__/
 /schnipsel.egg-info/
 /build/
 /.pybuild/
+/.tox/
 /debian/*debhelper*
 /debian/*.substvars
 /debian/files
