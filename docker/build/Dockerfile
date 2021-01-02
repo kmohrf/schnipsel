@@ -18,5 +18,5 @@ COPY --from=build-deps \
 RUN /usr/lib/local-apt-repository/rebuild && \
     apt update -y && \
     apt install -y -t buster-backports schnipsel-build-deps && \
-    apt-get clean -y
-
+    apt-get clean -y && \
+    id build >/dev/null 2>&1 || adduser --gecos '' --disabled-password build
