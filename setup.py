@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 from setuptools.command.build_py import build_py
 import subprocess
 
-from schnipsel import VERSION
+from schnipsel import __version__
 
 BASE_DIR = os.path.realpath(os.path.dirname(__file__))
 
@@ -55,7 +55,7 @@ class ExtendedBuildPyCommand(build_py):
 
 setup(
     name="schnipsel",
-    version=VERSION,
+    version=__version__,
     description="digital sticky note board",
     url="https://git.hack-hro.de/kmohrf/schnipsel",
     author="Konrad Mohrfeldt",
